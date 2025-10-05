@@ -1,0 +1,35 @@
+import express from "express";
+import {
+  forgetPassword,
+  getAllUsers,
+  loginUser,
+  logoutUser,
+  registerUser,
+  resetPassword,
+  verifyOTP,
+  updateTaskStatus,
+  getUserTasks,
+  checkAuth,
+  updateProfile,
+  getProfile,
+} from "../Controllers/userControllers.js";
+import isAuthenticated from "../Middleware/auth.js";
+
+const userRouter = express.Router();
+
+userRouter.post("/register", registerUser);
+userRouter.post("/login", loginUser);
+userRouter.get("/logout", logoutUser, isAuthenticated);
+userRouter.post("/forgot-password", forgetPassword, isAuthenticated);
+userRouter.post("/verify-otp", verifyOTP, isAuthenticated);
+userRouter.post("/reset-password", resetPassword, isAuthenticated);
+userRouter.get("/get-users", getAllUsers);
+
+userRouter.get("/check-auth", isAuthenticated, checkAuth);
+userRouter.get("/get-tasks", isAuthenticated, getUserTasks);
+userRouter.put("/update-task-status/:id", isAuthenticated, updateTaskStatus);
+
+userRouter.put("/update-profile", isAuthenticated, updateProfile);
+userRouter.get("/profile", isAuthenticated, getProfile);
+
+export default userRouter;
