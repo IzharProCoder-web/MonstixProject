@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { MdEmail, MdLock, MdPerson } from "react-icons/md";
 import axios from "axios";
 import toast from "react-hot-toast";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ const Register = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:4040/api/user/register",
+        `${BACKEND_URL}/api/user/register`,
         formData
       );
       if (data.success) {

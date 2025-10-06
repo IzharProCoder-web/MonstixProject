@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { MdEmail, MdLock } from "react-icons/md"; // Added React Icons
 import toast from "react-hot-toast";
 import axios from "axios";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -16,7 +17,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const {data} = await axios.post('http://localhost:4040/api/user/login', formData, { withCredentials: true });
+      const {data} = await axios.post(`${BACKEND_URL}/api/user/login`, formData, { withCredentials: true });
       if(data.success){
         toast.success(data.message);
         setFormData({ email: "", password: "" });
