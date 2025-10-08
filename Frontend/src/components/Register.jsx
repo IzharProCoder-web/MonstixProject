@@ -10,7 +10,7 @@ const Register = () => {
     username: "",
     email: "",
     password: "",
-    role: "User", // Default role as per schema
+    role: "User",
   });
   const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ const Register = () => {
     try {
       const { data } = await axios.post(
         `${BACKEND_URL}/api/user/register`,
-        formData
+        {formData}
       );
       if (data.success) {
         setFormData({
