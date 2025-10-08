@@ -16,7 +16,7 @@ const Login = () => {
 
     try {
       const { data } = await axios.post(
-        `https://monstix-project-backend.vercel.app/api/user/login`,
+        `${BACKEND_URL}/api/user/login`,
         { email, password },
         { withCredentials: true }
       );
