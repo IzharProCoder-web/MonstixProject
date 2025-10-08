@@ -1,42 +1,37 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { MdEmail, MdLock } from "react-icons/md"; // Added React Icons
+import { MdEmail, MdLock } from "react-icons/md";
 import toast from "react-hot-toast";
 import axios from "axios";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
+    console.log("Form Data:", { email, password });
 
     try {
-      const {data} = await axios.post(`${BACKEND_URL}/api/user/login`, formData, { withCredentials: true });
-      if(data.success){
+      const { data } = await axios.post(
+        `${BACKEND_URL}/api/user/login`,
+        { email, password },
+        { withCredentials: true }
+      );
+      if (data.success) {
         toast.success(data.message);
-        setFormData({ email: "", password: "" });
+        setEmail("");
+        setPassword("");
         navigate('/user-panel/tasks');
-        
-      }else{
+      } else {
         toast.error(data.message);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       toast.error("Login failed. Please try again.");
-
     }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -48,28 +43,26 @@ const Login = () => {
         <h1 className="text-gray-900 text-3xl mt-10 font-medium">Login</h1>
         <p className="text-gray-500 text-sm mt-2">Please sign in to continue</p>
         <div className="flex items-center w-full mt-4 bg-white border border-gray-300/80 h-12 rounded-full overflow-hidden pl-6 gap-2">
-          {/* Replaced SVG with React Icon */}
           <MdEmail size={20} className="text-gray-400" />
           <input
             type="email"
             name="email"
             placeholder="Email id"
             className="border-none outline-none ring-0"
-            value={formData.email}
-            onChange={handleChange}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
         <div className="flex items-center mt-4 w-full bg-white border border-gray-300/80 h-12 rounded-full overflow-hidden pl-6 gap-2">
-          {/* Replaced SVG with React Icon */}
           <MdLock size={20} className="text-gray-400" />
           <input
             type="password"
             name="password"
             placeholder="Password"
             className="border-none outline-none ring-0"
-            value={formData.password}
-            onChange={handleChange}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
@@ -84,7 +77,6 @@ const Login = () => {
         >
           Login
         </button>
-
         <p className="text-gray-500 text-sm mt-3 mb-11">
           Don't have an account?
           <Link to="/register" className="text-indigo-500 hover:underline">
@@ -95,4 +87,5 @@ const Login = () => {
     </div>
   );
 };
+
 export default Login;
