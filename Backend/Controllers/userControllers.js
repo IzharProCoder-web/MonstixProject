@@ -2,7 +2,6 @@ import User from "../Model/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
-import { uploadFileToCloudinary } from "../config/cloudinary.js";
 import Task from "../Model/Task.js";
 
 const transporter = nodemailer.createTransport({
