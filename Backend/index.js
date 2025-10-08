@@ -13,14 +13,23 @@ const PORT = process.env.PORT;
 //middileware
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: "https://monstix-project-frontend.vercel.app",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: "https://monstix-project-frontend.vercel.app",
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//     credentials: true,
+//   })
+// );
 //routes
+
+const cors = require('cors');
+app.use(cors({
+  origin: 'https://monstix-project-frontend.vercel.app',  // Allow your frontend origin
+  credentials: true,  // If sending cookies/credentials
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization']  // As needed
+}));
+
 app.use("/api/user", userRouter);
 app.use("/api/admin", adminRouter);
 
