@@ -15,6 +15,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Form Data:", formData);
 
     try {
       const {data} = await axios.post(`${BACKEND_URL}/api/user/login`, formData, { withCredentials: true });
