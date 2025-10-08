@@ -22,7 +22,6 @@ app.use(cookieParser());
 // );
 //routes
 
-const cors = require('cors');
 app.use(cors({
   origin: 'https://monstix-project-frontend.vercel.app',  // Allow your frontend origin
   credentials: true,  // If sending cookies/credentials
