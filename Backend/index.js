@@ -16,6 +16,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "https://monstix-project-frontend.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
 );
