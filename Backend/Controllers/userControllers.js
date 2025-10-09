@@ -70,7 +70,7 @@ export const loginUser = async (req, res) => {
       secure: true,
       sameSite: "none",
       maxAge: 24 * 60 * 60 * 1000,
-      domain: "monstix-project-backend.vercel.app",
+      
     });
 
     res.status(200).json({ success: true, message: "Login successful", user });
