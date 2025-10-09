@@ -44,17 +44,26 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
+    console.log("🔐 Login attempt for:", email);
+    console.log("📦 Request body:", req.body);
+
     if (!email || !password) {
-      return res.status(400).json({ message: "All  Fileds  are required" });
-    }
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res
-        .status(404)
-        .json({ message: "User not found Please Sign In " });
+      console.log("❌ Missing fields");
+      return res.status(400).json({ message: "All Fields are required" });
     }
 
+    const user = await User.findOne({ email });
+    console.log("👤 User found:", user ? "Yes" : "No");
+    
+    if (!user) {
+      console.log("❌ User not found in database");
+      return res.status(404).json({ message: "User not found Please Sign In" });
+    }
+
+    console.log("🔑 Checking password...");
     const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log("✅ Password valid:", isPasswordValid);
+
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password" });
     }
@@ -65,17 +74,25 @@ export const loginUser = async (req, res) => {
       { expiresIn: "1d" }
     );
 
+    console.log("✅ Login successful, setting cookie");
+    
     res.cookie("jwt", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
+      sameSite: "None", // Change this for cross-site
       maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({ success: true, message: "Login successful", user });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Server error" });
+    console.log("❌ LOGIN ERROR:", error);
+    console.log("🔍 Error details:", error.message);
+    console.log("📋 Stack trace:", error.stack);
+    res.status(500).json({ 
+      message: "Server error", 
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 };
 
