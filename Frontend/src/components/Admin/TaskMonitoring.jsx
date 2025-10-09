@@ -15,7 +15,7 @@ const TaskMonitoring = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const { data } = await axios.get(`${BACKEND_URL}/api/admin/get-tasks`);
+        const { data } = await axios.get(`${BACKEND_URL}/api/admin/get-tasks`, {withCredentials: true});
         if (data.success) {
           setTasks(data.tasks);
         } else {
