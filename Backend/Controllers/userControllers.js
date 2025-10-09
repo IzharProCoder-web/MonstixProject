@@ -109,7 +109,7 @@ export const checkAuth = (req, res) => {
 
 export const getUserTasks = async (req, res) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.user.userId ;
     const tasks = await Task.find({ assignedTasks: userId });
     res.status(200).json({ success: true, tasks });
   } catch (error) {

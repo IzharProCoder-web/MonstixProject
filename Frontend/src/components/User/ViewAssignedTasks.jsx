@@ -13,7 +13,7 @@ const ViewAssignedTasks = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/api/admin/get-tasks`, {
+        const response = await axios.get(`${BACKEND_URL}/api/user/get-tasks`, {
           withCredentials: true,
         });
         const tasksData = (response.data.tasks || []).map(task => ({
