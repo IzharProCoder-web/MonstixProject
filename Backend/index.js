@@ -10,6 +10,8 @@ const app = express();
 
 const PORT = process.env.PORT;
 
+await connectDb()
+
 //middileware
 app.use(express.json());
 app.use(cookieParser());
@@ -27,7 +29,16 @@ app.get("/", (req, res) => {
   res.send("Api Is Working ");
 });
 
+app.use((req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({ 
+      success: false, 
+      message: "Database not connected. Please try again." 
+    });
+  }
+  next();
+});
+
 app.listen(PORT, (req, res) => {
   console.log(`The Server Is Running on ${PORT} `);
-  connectDb();
 });
