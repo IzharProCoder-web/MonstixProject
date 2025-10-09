@@ -18,16 +18,16 @@ import adminAuthenticated from "../Middleware/adminAuth.js";
 const adminRouter = express.Router();
 
 adminRouter.post("/admin-login", adminLogin);
-adminRouter.get("/admin-logout", adminLogout, adminAuthenticated);
-adminRouter.get("/check-auth", checkAuth, adminAuthenticated);
-adminRouter.post("/create-task", createTask, adminAuthenticated);
-adminRouter.put("/update-task/:id", updateTask, adminAuthenticated);
-adminRouter.delete("/delete-task/:id", deleteTask, adminAuthenticated);
-adminRouter.get("/get-tasks", getAllTasks, adminAuthenticated);
-adminRouter.get("/complete-tasks", completedTask, adminAuthenticated);
-adminRouter.get("/inprogress-tasks", inProgressTask, adminAuthenticated);
-adminRouter.get("/pending-tasks", PendingTask, adminAuthenticated);
+adminRouter.get("/admin-logout", adminAuthenticated, adminLogout );
+adminRouter.get("/check-auth", adminAuthenticated, checkAuth, );
+adminRouter.post("/create-task", adminAuthenticated, createTask);
+adminRouter.put("/update-task/:id", adminAuthenticated,updateTask);
+adminRouter.delete("/delete-task/:id", adminAuthenticated, deleteTask);
+adminRouter.get("/get-tasks", adminAuthenticated, getAllTasks);
+adminRouter.get("/complete-tasks", adminAuthenticated, completedTask);
+adminRouter.get("/inprogress-tasks", adminAuthenticated, inProgressTask );
+adminRouter.get("/pending-tasks", adminAuthenticated, PendingTask, );
 adminRouter.put("/update-user/:id", updateUser);
-adminRouter.delete("/delete-user/:id", deleteUser, adminAuthenticated);
+adminRouter.delete("/delete-user/:id", adminAuthenticated, deleteUser);
 
 export default adminRouter;
