@@ -21,9 +21,9 @@ const TaskManagement = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const tasksResponse = await axios.get(`${BACKEND_URL}/api/admin/get-tasks`);
+        const tasksResponse = await axios.get(`${BACKEND_URL}/api/admin/get-tasks`, {withCredentials: true});
         setTasks(tasksResponse.data.tasks || []); 
-        const usersResponse = await axios.get(`${BACKEND_URL}/api/user/get-users`);
+        const usersResponse = await axios.get(`${BACKEND_URL}/api/user/get-users`, {withCredentials: true});
       
         const usersData = Array.isArray(usersResponse.data) 
           ? usersResponse.data 
