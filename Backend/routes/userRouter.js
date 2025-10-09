@@ -21,16 +21,16 @@ const userRouter = express.Router();
 userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
 userRouter.get("/logout", logoutUser, isAuthenticated);
-userRouter.post("/forgot-password", forgetPassword,isAuthenticated);
-userRouter.post("/verify-otp", verifyOTP, isAuthenticated);
-userRouter.post("/reset-password", resetPassword, isAuthenticated);
-userRouter.get("/get-users", getAllUsers, isAuthenticated);
+userRouter.post("/forgot-password", isAuthenticated, forgetPassword);
+userRouter.post("/verify-otp", isAuthenticated, verifyOTP );
+userRouter.post("/reset-password", isAuthenticated, resetPassword);
+userRouter.get("/get-users", isAuthenticated ,getAllUsers);
 
-userRouter.get("/check-auth", checkAuth, isAuthenticated);
-userRouter.get("/get-tasks", getUserTasks, isAuthenticated);
-userRouter.put("/update-task-status/:id", updateTaskStatus, isAuthenticated);
+userRouter.get("/check-auth", isAuthenticated, checkAuth);
+userRouter.get("/get-tasks", isAuthenticated, getUserTasks);
+userRouter.put("/update-task-status/:id", isAuthenticated,updateTaskStatus);
 
-userRouter.put("/update-profile", updateProfile, isAuthenticated);
-userRouter.get("/profile", getProfile, isAuthenticated);
+userRouter.put("/update-profile", isAuthenticated, updateProfile);
+userRouter.get("/profile", isAuthenticated, getProfile );
 
 export default userRouter;
