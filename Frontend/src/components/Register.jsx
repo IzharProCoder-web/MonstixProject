@@ -28,7 +28,7 @@ const Register = () => {
     try {
       const { data } = await axios.post(
         `${BACKEND_URL}/api/user/register`,
-        {formData}
+        formData
       );
       if (data.success) {
         setFormData({
