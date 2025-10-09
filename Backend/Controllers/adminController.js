@@ -224,7 +224,7 @@ export const PendingTask = async (req, res) => {
 
 export const getAllTasks = async (req, res) => {
   try {
-    const tasks = await Task.find().populate("assignedTasks", "name email");
+    const tasks = await Task.find().populate("assignedTasks", "title email");
     return res.status(200).json({ success: true, tasks });
   } catch (error) {
     console.log(error);
