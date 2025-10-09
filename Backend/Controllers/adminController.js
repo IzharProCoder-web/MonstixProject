@@ -27,8 +27,8 @@ export const adminLogin = (req, res) => {
 
     res.cookie("admin", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
+      secure:true,
+      sameSite: "none",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
