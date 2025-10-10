@@ -241,12 +241,15 @@ export const resetPassword = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().select(
+    const loggedInUserId = req.user.userId; // Assuming middleware sets req.user
+    const users = await User.find({ _id: { $ne: loggedInUserId } }).select(
       "-password -resetPasswordOTP -resetPasswordExpires"
     );
-    res.status(200).json({ success: true, users });
+    res.status(200).json({ success: true, users, loggedInUserId }); // Include loggedInUserId for frontend
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Server error" });

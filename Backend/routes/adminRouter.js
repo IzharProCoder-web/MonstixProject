@@ -23,7 +23,7 @@ adminRouter.get("/check-auth", adminAuthenticated, checkAuth, );
 adminRouter.post("/create-task", adminAuthenticated, createTask);
 adminRouter.put("/update-task/:id", adminAuthenticated,updateTask);
 adminRouter.delete("/delete-task/:id", adminAuthenticated, deleteTask);
-adminRouter.get("/get-tasks", adminAuthenticated, getAllTasks);
+adminRouter.get("/get-tasks", getAllTasks);
 adminRouter.get("/complete-tasks", adminAuthenticated, completedTask);
 adminRouter.get("/inprogress-tasks", adminAuthenticated, inProgressTask );
 adminRouter.get("/pending-tasks", adminAuthenticated, PendingTask, );

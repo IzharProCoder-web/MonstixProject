@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, X, Clipboard, User, LogOut, Shield, ClipboardList } from 'lucide-react';
+import { Menu, X, Clipboard, User, LogOut, Shield, ClipboardList, MessageCircle } from 'lucide-react';
 import axios from 'axios';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -12,6 +12,7 @@ const UserSidebar = () => {
     { text: 'All Tasks', icon: <Clipboard className="w-6 h-6" />, path: 'tasks' },
     { text: 'My Tasks', icon: <ClipboardList className="w-6 h-6" />, path: 'view-tasks' },
     { text: 'Profile', icon: <User className="w-6 h-6" />, path: 'profile' },
+    { text: 'Chat', icon: <MessageCircle className="w-6 h-6" />, path: 'chating' },
   ];
 
   const logout = async () => {

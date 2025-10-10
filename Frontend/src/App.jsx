@@ -16,6 +16,7 @@ import TaskStatusUpdate from "./components/User/TaskStatusUpdate";
 import ProfileManagement from "./components/User/ProfileManagement";
 import AdminLogin from "./components/Admin/AdminLogin";
 import ViewAssignedTasks from "./components/User/ViewAssignedTasks";
+import Chating from "./components/Chating";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -118,6 +119,7 @@ const App = () => {
           <Route path="tasks" element={<TaskStatusUpdate />} />
           <Route path="profile" element={<ProfileManagement />} />
           <Route path="view-tasks" element={<ViewAssignedTasks />} />
+          <Route path="chating" element={<Chating />} />
         </Route>
       </Routes>
     </>
