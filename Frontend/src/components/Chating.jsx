@@ -147,7 +147,6 @@ const Chating = () => {
     };
   }, [socket, loggedInUserId, selectedUser]);
 
-  // Focus on edit input when editing starts
   useEffect(() => {
     if (editingMessage && editInputRef.current) {
       editInputRef.current.focus();
@@ -383,33 +382,37 @@ const Chating = () => {
   };
 
   return (
-    <div className="bg-gray-900 w-full h-screen flex flex-col md:flex-row text-white font-sans">
+    <div className="bg-white w-full h-screen flex flex-col md:flex-row text-white font-sans">
       {/* Users List */}
-      <div className={`w-full md:w-[30%] h-full bg-gray-800 shadow-xl overflow-y-auto ${selectedUser ? 'hidden md:block' : 'block'}`}>
+      <div className={`w-full md:w-[30%] h-full bg-white shadow-xl overflow-y-auto ${selectedUser ? 'hidden md:block' : 'block'}`}>
         <div className="p-4 md:p-6">
-          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-orange-400">Users</h2>
+          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-black">Users</h2>
           {users.map((user, index) => (
             <div
               key={index}
-              className={`flex items-center gap-3 md:gap-4 mb-3 md:mb-4 p-3 rounded-xl cursor-pointer transition-all duration-200 hover:bg-gray-700 relative ${
-                selectedUser?._id === user._id ? "bg-gray-700 shadow-md" : ""
+              className={`flex items-center gap-3 md:gap-4 mb-3 md:mb-4 p-3 rounded-xl cursor-pointer transition-all duration-200 hover:bg-gray-800 relative ${
+                selectedUser?._id === user._id ? "bg-gray-800 shadow-md" : ""
               }`}
               onClick={() => handleUserSelect(user)}
+              role="button"
+              tabIndex={0}
+              onKeyPress={(e) => e.key === 'Enter' && handleUserSelect(user)}
+              aria-label={`Select ${user.username} to chat`}
             >
               <img
                 src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${user.email}`}
                 alt={`${user.username}'s avatar`}
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-orange-400"
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-gray-900"
               />
               <div className="flex-1">
-                <h1 className="text-base md:text-lg font-semibold">{user.username}</h1>
+                <h3 className="text-base md:text-lg font-semibold text-black group-hover:text-white">{user.username}</h3>
                 <p className="text-xs md:text-sm text-gray-400">{user.email}</p>
                 {typingUsers[user._id] && (
-                  <p className="text-xs text-orange-400 italic">typing...</p>
+                  <p className="text-xs text-gray-300 italic">typing...</p>
                 )}
               </div>
               {unseenCounts[user._id] > 0 && (
-                <span className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                <span className="absolute top-2 right-2 bg-white text-black rounded-full w-5 h-5 flex items-center justify-center text-xs">
                   {unseenCounts[user._id]}
                 </span>
               )}
@@ -422,10 +425,11 @@ const Chating = () => {
       <div className={`w-full md:w-[70%] h-full flex flex-col ${selectedUser ? 'block' : 'hidden md:block'}`}>
         {selectedUser ? (
           <>
-            <div className="bg-orange-600 p-3 md:p-4 flex items-center gap-3 md:gap-4 shadow-md">
+            <div className="bg-gray-900 p-3 md:p-4 flex items-center gap-3 md:gap-4 shadow-md border-b border-gray-700">
               <button
                 className="md:hidden text-white text-lg w-10 z-10"
                 onClick={() => setSelectedUser(null)}
+                aria-label="Back to user list"
               >
                 ←
               </button>
@@ -434,19 +438,23 @@ const Chating = () => {
                 alt={`${selectedUser.username}'s avatar`}
                 className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-white"
               />
-              <h2 className="text-lg md:text-xl font-bold">{selectedUser.username}</h2>
+              <h2 className="text-lg md:text-xl font-bold text-white">{selectedUser.username}</h2>
               {typingUsers[selectedUser._id] && (
-                <p className="text-sm italic text-white ml-2">typing...</p>
+                <p className="text-sm italic text-gray-300">typing...</p>
               )}
             </div>
 
             {/* Messages Area */}
-            <div ref={chatContainerRef} className="flex-1 p-4 md:p-6 bg-gray-850 overflow-y-auto">
+            <div
+              ref={chatContainerRef}
+              className="flex-1 p-4 md:p-6 bg-white overflow-y-auto"
+              aria-live="polite"
+            >
               {(chatHistory[selectedUser._id] || []).length > 0 ? (
                 Object.entries(groupMessagesByDate(chatHistory[selectedUser._id])).map(([date, messages]) => (
                   <div key={date}>
                     <div className="text-center my-4">
-                      <span className="bg-gray-700 px-3 py-1 rounded-full text-xs text-gray-300">
+                      <span className="bg-gray-800 px-3 py-1 rounded-full text-xs text-gray-300">
                         {formatDate(date)}
                       </span>
                     </div>
@@ -479,7 +487,7 @@ const Chating = () => {
                           <div className="max-w-[80%] md:max-w-[70%] flex flex-col items-end">
                             {editingMessage === msg._id ? (
                               // Edit Mode
-                              <div className="bg-blue-700 p-3 md:p-4 rounded-xl rounded-br-none shadow-sm w-full">
+                              <div className="bg-gray-900 p-3 md:p-4 rounded-xl rounded-br-none shadow-sm w-full">
                                 <input
                                   ref={editInputRef}
                                   type="text"
@@ -490,18 +498,19 @@ const Chating = () => {
                                       saveEdit();
                                     }
                                   }}
-                                  className="w-full bg-blue-600 text-white p-2 rounded border border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                  className="w-full bg-white text-black p-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-900"
+                                  aria-label="Edit message"
                                 />
                                 <div className="flex gap-2 justify-end mt-2">
                                   <button
                                     onClick={saveEdit}
-                                    className="text-xs bg-green-500 px-3 py-1 rounded hover:bg-green-600 transition-colors"
+                                    className="text-xs bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-600 transition-colors"
                                   >
                                     Save
                                   </button>
                                   <button
                                     onClick={cancelEdit}
-                                    className="text-xs bg-gray-500 px-3 py-1 rounded hover:bg-gray-600 transition-colors"
+                                    className="text-xs bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600 transition-colors"
                                   >
                                     Cancel
                                   </button>
@@ -510,32 +519,32 @@ const Chating = () => {
                             ) : (
                               // Normal Message View
                               <div className="relative group">
-                                <div className="bg-blue-600 p-3 md:p-4 rounded-xl rounded-br-none shadow-sm">
+                                <div className="bg-gray-900 p-3 md:p-4 rounded-xl rounded-br-none shadow-sm">
                                   <p className="text-sm md:text-base text-white">{msg.text}</p>
                                   <div className="flex items-center gap-2 mt-1 justify-end">
-                                    <span className="text-xs text-blue-200">
+                                    <span className="text-xs text-gray-300">
                                       {msg.seen ? '✓✓' : '✓'}
                                     </span>
                                     {msg.edited && (
-                                      <span className="text-xs text-blue-200">(edited)</span>
+                                      <span className="text-xs text-gray-300">(edited)</span>
                                     )}
-                                    <p className="text-xs text-blue-200">
+                                    <p className="text-xs text-gray-300">
                                       {formatTime(msg.timestamp)}
                                     </p>
                                   </div>
                                 </div>
-                                
-                                {/* Edit/Delete Buttons - Always visible for sender messages */}
                                 <div className="absolute -left-14 top-1/2 transform -translate-y-1/2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                                   <button
                                     onClick={() => startEdit(msg._id, msg.text)}
-                                    className="text-xs bg-yellow-500 px-2 py-1 rounded hover:bg-yellow-600 transition-colors whitespace-nowrap"
+                                    className="text-xs bg-gray-700 text-white px-2 py-1 rounded hover:bg-gray-600 transition-colors whitespace-nowrap"
+                                    aria-label="Edit message"
                                   >
                                     Edit
                                   </button>
                                   <button
                                     onClick={() => deleteMessage(msg._id)}
-                                    className="text-xs bg-red-500 px-2 py-1 rounded hover:bg-red-600 transition-colors whitespace-nowrap"
+                                    className="text-xs bg-gray-500 text-white px-2 py-1 rounded hover:bg-gray-600 transition-colors whitespace-nowrap"
+                                    aria-label="Delete message"
                                   >
                                     Delete
                                   </button>
@@ -550,13 +559,13 @@ const Chating = () => {
                 ))
               ) : (
                 <div className="flex items-center justify-center h-full">
-                  <p className="text-gray-400">No messages yet. Start a conversation!</p>
+                  <p className="text-gray-400 text-sm md:text-base">No messages yet. Start a conversation!</p>
                 </div>
               )}
             </div>
 
             {/* Message Input */}
-            <div className="p-3 md:p-4 bg-gray-800 flex gap-2 md:gap-3 border-t border-gray-700">
+            <div className="p-3 md:p-4 bg-gray-900 flex gap-2 md:gap-3 border-t border-gray-700">
               <input
                 type="text"
                 value={message}
@@ -568,19 +577,21 @@ const Chating = () => {
                 }}
                 onKeyPress={(e) => e.key === "Enter" && sendMessage(selectedUser._id)}
                 placeholder="Type a message..."
-                className="flex-1 p-2 md:p-3 rounded-xl bg-gray-700 text-white placeholder-gray-400 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-orange-400"
+                className="flex-1 p-2 md:p-3 rounded-xl bg-gray-800 text-white placeholder-gray-400 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-white"
+                aria-label="Type a message"
               />
               <button
                 onClick={() => sendMessage(selectedUser._id)}
-                className="bg-orange-500 px-4 md:px-6 py-2 md:py-3 rounded-xl hover:bg-orange-600 transition-colors duration-200 font-semibold text-sm md:text-base"
+                className="bg-gray-700 px-4 md:px-6 py-2 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base hover:bg-gray-600 focus:ring-2 focus:ring-white focus:ring-offset-2 transition-colors duration-200"
+                aria-label="Send message"
               >
                 Send
               </button>
             </div>
           </>
         ) : (
-          <div className="flex-1 flex items-center justify-center bg-gray-850 h-full">
-            <p className="text-base md:text-lg text-gray-400 capitalize">Select a user to start chatting</p>
+          <div className="flex-1 flex items-center justify-center bg-white h-full">
+            <p className="text-base md:text-lg text-gray-800 capitalize font-bold">Select a user to start chatting</p>
           </div>
         )}
       </div>
